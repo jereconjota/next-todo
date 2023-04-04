@@ -1,27 +1,27 @@
 import { useDebugValue, useEffect, useState } from "react";
 
 export function useLocalStorage(key, initialState) {
-  const [state, setState] = useState(initialState);
-  useDebugValue(state);
+    const [state, setState] = useState(initialState);
+    useDebugValue(state);
 
-  useEffect(() => {
-    const item = localStorage.getItem(key);
-    if (item) setState(parse(item));
-  }, []);
+    useEffect(() => {
+        const item = localStorage.getItem(key);
+        if (item) setState(parse(item));
+    }, [ key ]);
 
-  useEffect(() => {
-    if (state.length > 0) {
-      localStorage.setItem(key, JSON.stringify(state));
-    }
-  }, [state]);
+    useEffect(() => {
+        if (state.length > 0) {
+            localStorage.setItem(key, JSON.stringify(state));
+        }
+    }, [state, key]);
 
-  return [state, setState];
+    return [state, setState];
 }
 
 function parse(obj) {
-  try {
-    return JSON.parse(obj);
-  } catch {
-    return obj;
-  }
+    try {
+        return JSON.parse(obj);
+    } catch {
+        return obj;
+    }
 }
